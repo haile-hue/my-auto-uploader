@@ -1,0 +1,22 @@
+name: NonStop_Uploader
+on:
+  push:
+  schedule:
+    - cron: '0 */6 * * *' # በየ 6 ሰዓቱ በራሱ ይነሳል
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Python Tools
+        run: |
+          pip install telethon playwright
+          playwright install chromium --with-deps
+      - name: Run Python Script
+        run: python main.py
+        env:
+          TG_API_ID: ${{ secrets.TG_API_ID }}
+          TG_API_HASH: ${{ secrets.TG_API_HASH }}
+          WEB_USER: ${{ secrets.WEB_USER }}
+          WEB_PASS: ${{ secrets.WEB_PASS }}
